@@ -9,7 +9,7 @@ public class FlagBlock : BlockClass
         // If it collides with Player, the level is completed
         if(collision.gameObject.CompareTag("Player"))
         {
-            FindFirstObjectByType<GameManager>().OnWin();
+            FindFirstObjectByType<GameManager>().OnResult(true);
         }
     }
 }

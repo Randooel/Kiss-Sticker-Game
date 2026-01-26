@@ -45,13 +45,17 @@ public class PlayerActions : MonoBehaviour
     #region Kiss Action Related
     private void Kiss(InputAction.CallbackContext context)
     {
-        _playerAnimations.PlayKiss();
+        if(_playerMovement.CanMove)
+        {
+            _playerAnimations.PlayKiss();
 
-        //Disables movement. It is activated again with an animation event in the Kiss animation
-        _playerMovement.DisableMovement();
+            //Disables movement. It is activated again with an animation event in the Kiss animation
+            _playerMovement.DisableMovement();
 
-        // Checks collision and activates the duplicate logic
-        CheckForContact();
+            // Checks collision and activates the duplicate logic
+            CheckForContact();
+        }
+        else return;
     }
 
     private void CheckForContact()

@@ -1,13 +1,24 @@
+using Sirenix.OdinInspector;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region Script References
+    private PlayerMovement _playerMovement;
+    #endregion
+
     private PlayerInput _playerInput;
     private InputAction _restartAction;
 
-
+    #region Puzzle Result UI
+    [TabGroup("Puzzle Result UI")] [SerializeField] private GameObject _puzzleResultUI;
+    [TabGroup("Puzzle Result UI")] [SerializeField] private TextMeshProUGUI _resultText;
+    [TabGroup("Puzzle Result UI")] [SerializeField] private List<ParticleSystem> _sparksParticles = new List<ParticleSystem>();
+    #endregion
 
     #region Setup Functions (Awake, Enable, Start...)
     private void OnEnable()
@@ -21,14 +32,37 @@ public class GameManager : MonoBehaviour
     {
         _restartAction.performed -= RestartCurrentLevel;
     }
+
+    private void Start()
+    {
+        // Assigning references
+        _playerMovement = FindAnyObjectByType<PlayerMovement>();
+
+        _puzzleResultUI.SetActive(false);
+    }
     #endregion
 
 
 
     #region Game States
-    public void OnWin()
+    public void OnResult(bool win)
     {
-        Debug.Log("Puzzle Solved!");
+        _puzzleResultUI.SetActive(true);
+
+        _playerMovement.DisableMovement();
+
+        if (win)
+        {
+            _resultText.text = "Puzzle Solved!";
+            foreach(var particle in _sparksParticles)
+            {
+                particle.Play();
+            }
+        }
+        else
+        {
+            _resultText.text = "Press [R] to try again! :)";
+        }
     }
     #endregion
 

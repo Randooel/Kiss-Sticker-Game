@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private bool _canMove = true;
     [SerializeField] [Range(0, 50)] private float _moveSpeed;
+
+    public bool CanMove { get => _canMove; set => _canMove = value; }
     #endregion
 
     #region Setup Functions
@@ -49,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(_canMove)
+        if(CanMove)
         {
             Move();
         }
@@ -88,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
     #region Functions for other entities to reference (like Animator Events)
     private void ToggleMovement(bool value)
     {
-        _canMove = value;
+        CanMove = value;
     }
 
     public void EnableMovement()
@@ -118,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
     #region Animation Functions
     public void PlayIdleAnimation(InputAction.CallbackContext context)
     {
-        if(_canMove)
+        if(CanMove)
         {
             _playerAnimations.PlayIdle();
         }
@@ -126,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void PlayWalkAnimation(InputAction.CallbackContext context)
     {
-        if (_canMove)
+        if (CanMove)
         {
             _playerAnimations.PlayWalk();
         }

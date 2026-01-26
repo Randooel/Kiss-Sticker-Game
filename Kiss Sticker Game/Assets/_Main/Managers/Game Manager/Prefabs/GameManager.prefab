@@ -44,3 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a7a3b06fb131d47b3d9eabd37c60e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  _puzzleResultUI: {fileID: 0}
+  _resultText: {fileID: 0}
+  _sparksParticles:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
