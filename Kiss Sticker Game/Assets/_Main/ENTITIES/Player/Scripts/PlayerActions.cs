@@ -46,7 +46,6 @@ public class PlayerActions : MonoBehaviour
     private void Kiss(InputAction.CallbackContext context)
     {
         _playerAnimations.PlayKiss();
-        Debug.Log("Kissed!");
 
         //Disables movement. It is activated again with an animation event in the Kiss animation
         _playerMovement.DisableMovement();

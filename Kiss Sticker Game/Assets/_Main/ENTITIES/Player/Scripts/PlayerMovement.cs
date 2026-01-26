@@ -94,6 +94,20 @@ public class PlayerMovement : MonoBehaviour
     public void EnableMovement()
     {
         ToggleMovement(true);
+
+        Vector2 movementInput = _playerInput.actions.FindAction("Move").ReadValue<Vector2>();
+
+        // If player is walking
+        if (movementInput.magnitude > 0)
+        {
+            // Play walk animation
+            _playerAnimations.PlayWalk();
+        }
+        else
+        {
+            // Play idle animation
+            _playerAnimations.PlayIdle();
+        }
     }
     public void DisableMovement()
     {
