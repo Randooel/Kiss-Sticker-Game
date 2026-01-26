@@ -50,10 +50,11 @@ public class PlayerActions : MonoBehaviour
         //Disables movement. It is activated again with an animation event in the Kiss animation
         _playerMovement.DisableMovement();
 
+        // Checks collision and activates the duplicate logic
         CheckForContact();
     }
 
-    private bool CheckForContact()
+    private void CheckForContact()
     {
         RaycastHit hit;
 
@@ -63,15 +64,14 @@ public class PlayerActions : MonoBehaviour
         if (Physics.Raycast(this.transform.position, visual.transform.forward, out hit, 2f))
         {
             // If the collider hit has the IDuplicatable interface
-            if(hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
+            if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
             {
-                // WIP: Duplicate Logic
                 Debug.Log(hit.collider.gameObject.name);
-                return true;
+
+                // Duplicate Logic
+                hit.collider.GetComponent<BlockClass>().OnDuplicate();
             }
-            else return false;
         }
-        else return false;
     }
 
     #endregion
