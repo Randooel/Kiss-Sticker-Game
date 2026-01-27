@@ -526,10 +526,10 @@
                 {
                     "name": "",
                     "id": "3410a3af-147a-4d68-9abf-9d3981cd7f16",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": "",
                     "action": "Kiss",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -548,7 +548,7 @@
                 {
                     "name": "",
                     "id": "1e1f3405-b525-4eec-a9bc-4ea2c4cf3e7d",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
