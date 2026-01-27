@@ -18,8 +18,6 @@ public class BlockClass : MonoBehaviour, IDuplicatable
     {
         var duplicate = Instantiate(this.gameObject);
         FindFirstObjectByType<StickerManager>().AddDuplicate(duplicate);
-
-        Debug.Log("Duplicate!");
     }
 
     public void OnUndoDuplicate()

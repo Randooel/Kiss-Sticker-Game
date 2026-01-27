@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _moveAction = _inputAsset.FindActionMap("Player").FindAction("Move");
 
-        Debug.Log(_moveAction);
+        //Debug.Log(_moveAction);
 
         // Subscribing FlipVisualRotation function to the _moveAction event
         _moveAction.performed += FlipVisualRotation;
@@ -58,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    #region Move Related Functions
     private void Move()
     {
         // Gets the movement direction
@@ -87,6 +88,7 @@ public class PlayerMovement : MonoBehaviour
             visual.transform.localRotation = Quaternion.Euler(visual.transform.localRotation.x, 0, 0);
         }
     }
+    #endregion
 
     #region Functions for other entities to reference (like Animator Events)
     private void ToggleMovement(bool value)

@@ -6,10 +6,11 @@ using UnityEngine;
 
 public class PlayerDuplicates : MonoBehaviour, IDuplicatable
 {
-    #region Duplication Handle Functions
+    #region Duplication Related Functions
     public void OnDuplicate()
     {
-        FindFirstObjectByType<StickerManager>().AddDuplicate(this.gameObject);
+        var duplicate = Instantiate(this.gameObject);
+        FindFirstObjectByType<StickerManager>().AddDuplicate(duplicate);
     }
 
     public void OnUndoDuplicate()
