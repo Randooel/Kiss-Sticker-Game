@@ -16,6 +16,23 @@ public class PlayerActions : MonoBehaviour
     #endregion
 
 
+
+    #region Variables
+    [SerializeField][Range(0, 10)] private float _raycastRange = 2;
+    [SerializeField][Range(0, 5)] private float _raycastOffset = 1;
+    /*
+    [SerializeField] private GameObject _raycastVisual;
+
+    private void OnValidate()
+    {
+        _raycastVisual.transform.position = new Vector3(this.transform.position.x + _raycastRange, 
+            this.transform.position.y, this.transform.position.z);
+    }
+    */
+    #endregion
+
+
+
     #region Setting up New Input System variables and events
     private PlayerInput _playerInput;
     private InputAction _kissAction;
@@ -60,23 +77,30 @@ public class PlayerActions : MonoBehaviour
 
     private void CheckForContact()
     {
-        RaycastHit hit;
-
         var visual = _playerAnimations.visual;
 
+        Vector2 direction = visual.transform.right;
+        Vector2 origin = (Vector2)this.transform.position + (_raycastOffset * direction);
+
+        // Raycast
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, _raycastRange);
+
+        Debug.DrawRay(origin, direction * _raycastRange, Color.red);
+
         // Cast a raycast
-        if (Physics.Raycast(this.transform.position, visual.transform.forward, out hit, 2f))
+        if (hit.collider != null)
         {
+            Debug.Log("Colided with" + hit.collider.name);
+
             // If the collider hit has the IDuplicatable interface
             if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
             {
                 Debug.Log(hit.collider.gameObject.name);
 
                 // Duplicate Logic
-                hit.collider.GetComponent<BlockClass>().OnDuplicate();
+                hit.collider.GetComponent<IDuplicatable>().OnDuplicate();
             }
         }
     }
-
     #endregion
 }

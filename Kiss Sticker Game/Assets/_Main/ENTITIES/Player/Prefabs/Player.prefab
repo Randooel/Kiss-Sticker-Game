@@ -344,6 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 942ab9d289a0a774a82896422338d089, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerActions
+  _raycastRange: 2
 --- !u!114 &3743970379557526871
 MonoBehaviour:
   m_ObjectHideFlags: 0
