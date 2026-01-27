@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     private PlayerMovement _playerMovement;
     #endregion
 
-    private PlayerInput _playerInput;
+    [SerializeField] private InputActionAsset _inputAsset;
     private InputAction _restartAction;
 
     #region Puzzle Result UI
@@ -23,8 +23,7 @@ public class GameManager : MonoBehaviour
     #region Setup Functions (Awake, Enable, Start...)
     private void OnEnable()
     {
-        _playerInput = FindAnyObjectByType<PlayerInput>();
-        _restartAction = _playerInput.actions.FindAction("Restart Level");
+        _restartAction = _inputAsset.FindActionMap("Player").FindAction("Restart Level");
 
         _restartAction.performed += RestartCurrentLevel;
     }

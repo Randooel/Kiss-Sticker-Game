@@ -34,15 +34,17 @@ public class PlayerActions : MonoBehaviour
 
 
     #region Setting up New Input System variables and events
-    private PlayerInput _playerInput;
+    [SerializeField] private InputActionAsset _inputAsset;
     private InputAction _kissAction;
+    private InputAction _kissSelfAction;
 
     private void OnEnable()
     {
-        _playerInput = GetComponent<PlayerInput>();
-        _kissAction = _playerInput.actions.FindAction("Kiss");
+        _kissAction = _inputAsset.FindActionMap("Player").FindAction("Kiss");
+        _kissSelfAction = _inputAsset.FindActionMap("Player").FindAction("Kiss Self");
 
         _kissAction.performed += Kiss;
+        _kissSelfAction.performed += KissSelf;
     }
     private void OnDisable()
     {
@@ -75,6 +77,11 @@ public class PlayerActions : MonoBehaviour
         else return;
     }
 
+    private void KissSelf(InputAction.CallbackContext context)
+    {
+        this.GetComponent<PlayerDuplicates>().OnDuplicate();
+    }
+
     private void CheckForContact()
     {
         var visual = _playerAnimations.visual;
@@ -90,13 +97,9 @@ public class PlayerActions : MonoBehaviour
         // Cast a raycast
         if (hit.collider != null)
         {
-            Debug.Log("Colided with" + hit.collider.name);
-
             // If the collider hit has the IDuplicatable interface
             if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
             {
-                Debug.Log(hit.collider.gameObject.name);
-
                 // Duplicate Logic
                 hit.collider.GetComponent<IDuplicatable>().OnDuplicate();
             }

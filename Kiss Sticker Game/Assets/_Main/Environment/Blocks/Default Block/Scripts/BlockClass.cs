@@ -7,7 +7,6 @@ public class BlockClass : MonoBehaviour, IDuplicatable
 {
     [TabGroup("Duplicates Variables")]
     [SerializeField] [ReadOnly] private int _duplicateIndex;
-    [SerializeField] [ReadOnly] private List<BlockClass> _duplicates = new List<BlockClass>();
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
@@ -17,7 +16,8 @@ public class BlockClass : MonoBehaviour, IDuplicatable
     #region Handle Duplication
     public void OnDuplicate()
     {
-        _duplicates.Add(Instantiate(this));
+        var duplicate = Instantiate(this.gameObject);
+        FindFirstObjectByType<StickerManager>().AddDuplicate(duplicate);
 
         Debug.Log("Duplicate!");
     }

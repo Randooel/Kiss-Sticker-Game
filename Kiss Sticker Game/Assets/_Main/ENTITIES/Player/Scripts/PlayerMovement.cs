@@ -12,8 +12,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Movement Variables
-    PlayerInput _playerInput;
-    InputAction _moveAction;
+    [SerializeField] private InputActionAsset _inputAsset;
+    private InputAction _moveAction;
 
     [SerializeField] private bool _canMove = true;
     [SerializeField] [Range(0, 50)] private float _moveSpeed;
@@ -24,8 +24,9 @@ public class PlayerMovement : MonoBehaviour
     #region Setup Functions
     void OnEnable()
     {
-        _playerInput = GetComponent<PlayerInput>();
-        _moveAction = _playerInput.actions.FindAction("Move");
+        _moveAction = _inputAsset.FindActionMap("Player").FindAction("Move");
+
+        Debug.Log(_moveAction);
 
         // Subscribing FlipVisualRotation function to the _moveAction event
         _moveAction.performed += FlipVisualRotation;
@@ -97,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
     {
         ToggleMovement(true);
 
-        Vector2 movementInput = _playerInput.actions.FindAction("Move").ReadValue<Vector2>();
+        Vector2 movementInput = _moveAction.ReadValue<Vector2>();
 
         // If player is walking
         if (movementInput.magnitude > 0)
