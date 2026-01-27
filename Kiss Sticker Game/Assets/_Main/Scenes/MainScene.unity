@@ -1755,9 +1755,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3369705552365984168, guid: 708ce6182254c1847bf2d6502cecfd0b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148096996912644711, guid: 708ce6182254c1847bf2d6502cecfd0b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314318327444897069, guid: 708ce6182254c1847bf2d6502cecfd0b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6593491142323598484, guid: 708ce6182254c1847bf2d6502cecfd0b, type: 3}
       propertyPath: m_Name
       value: StickerManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668722974427612652, guid: 708ce6182254c1847bf2d6502cecfd0b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1907,7 +1923,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8972883940274423447, guid: 3aa759820e5d84845932c5795ed2a340, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.5
+      value: -8.24
       objectReference: {fileID: 0}
     - target: {fileID: 8972883940274423447, guid: 3aa759820e5d84845932c5795ed2a340, type: 3}
       propertyPath: m_LocalPosition.y

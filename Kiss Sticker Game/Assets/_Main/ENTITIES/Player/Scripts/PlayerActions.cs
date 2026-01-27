@@ -97,11 +97,15 @@ public class PlayerActions : MonoBehaviour
         // Cast a raycast
         if (hit.collider != null)
         {
-            // If the collider hit has the IDuplicatable interface
-            if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
+            // If it dosn't have the Duplicate script, can move forward to the duplicating process
+            if(!hit.collider.TryGetComponent<Duplicate>(out var hasDuplicateScript))
             {
-                // Duplicate Logic
-                hit.collider.GetComponent<IDuplicatable>().OnDuplicate();
+                // If the collider hit has the IDuplicatable interface
+                if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
+                {
+                    // Duplicate Logic
+                    hit.collider.GetComponent<IDuplicatable>().OnDuplicate();
+                }
             }
         }
     }
