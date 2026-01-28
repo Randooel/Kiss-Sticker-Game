@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 
 
-public class PlayerActions : MonoBehaviour, IDuplicatable
+public class PlayerActions : Duplicatable
 {
     #region Script References
     private PlayerMovement _playerMovement;
@@ -98,32 +98,20 @@ public class PlayerActions : MonoBehaviour, IDuplicatable
         if (hit.collider != null)
         {
             // If the collider hit has the IDuplicatable interface
-            if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
+            if (hit.collider.TryGetComponent<Duplicatable>(out var duplicatable))
             {
                 // Checks if it dosn't have the Duplicate script
                 if (!hit.collider.TryGetComponent<Duplicate>(out var hasDuplicateScript))
                 {
                     // Duplicate Logic
-                    hit.collider.GetComponent<IDuplicatable>().OnDuplicate();
+                    hit.collider.GetComponent<Duplicatable>().OnDuplicate();
                 }
                 else
                 {
-                    hit.collider.GetComponent<IDuplicatable>().OnUndoDuplicate();
+                    hit.collider.GetComponent<Duplicatable>().OnUndoDuplicate();
                 }
             }
         }
-    }
-    #endregion
-
-    #region Duplication Related Functions
-    public void OnDuplicate()
-    {
-        FindFirstObjectByType<StickerManager>().AddDuplicate(this.gameObject);
-    }
-
-    public void OnUndoDuplicate()
-    {
-        FindFirstObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
     }
     #endregion
 }
