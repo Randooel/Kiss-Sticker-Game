@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
 public class StickerManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class StickerManager : MonoBehaviour
     [SerializeField] private Transform _stickerParent;
 
     [Space(10)]
-    [SerializeField] private int _maxStickers;
+    [SerializeField, ReadOnly] private int _availableStickers;
+
+    [Space(5)]
     [SerializeField] private List<Transform> _stickers = new List<Transform>();
     #endregion
 
@@ -22,6 +25,8 @@ public class StickerManager : MonoBehaviour
 
     void Start()
     {
+        _availableStickers = _stickers.Count;
+
         foreach(var sticker in _stickers)
         {
             sticker.gameObject.SetActive(false);
@@ -33,40 +38,66 @@ public class StickerManager : MonoBehaviour
         
     }
 
-    #region Add Sticker
+    #region Handle Stickesr
+    public bool CheckStickers()
+    {
+        // If it has stickers left, lets the duplicate process continue. Else doesn't
+        if (_availableStickers <= _stickers.Count && _availableStickers > 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
     private void AddSticker(Transform duplicate)
     {
-        var sticker = _stickers[_duplicates.Count - 1];
+        var sticker = _stickers[_availableStickers - 1];
 
         sticker.gameObject.SetActive(true);
         sticker.position = duplicate.position;
         sticker.parent = duplicate;
+
+        _availableStickers--;
     }
 
     private void RemoveSticker(int index)
     {
         var sticker = _stickers[index];
 
-        sticker.gameObject.SetActive(true);
-        sticker.position = _stickerParent.position;
         sticker.parent = _stickerParent;
+        sticker.position = _stickerParent.position;
+        sticker.gameObject.SetActive(false);
 
+        _availableStickers++;
     }
     #endregion
 
     #region Handle Duplicates 
-    public void AddDuplicate(GameObject duplicate)
+    public void AddDuplicate(GameObject original)
     {
-        _duplicates.Add(duplicate);
-        duplicate.transform.parent = _duplicateParent;
-        duplicate.AddComponent<Duplicate>().index = _duplicates.Count -1;
+        if (CheckStickers())
+        {
+            var duplicate = Instantiate(original);
 
-        AddSticker(duplicate.transform);
+            _duplicates.Add(duplicate);
+            duplicate.transform.parent = _duplicateParent;
+            duplicate.AddComponent<Duplicate>().index = _stickers.Count - _availableStickers;
+
+            AddSticker(duplicate.transform);
+        }
+        else Debug.Log("Can't duplicate. No stickers left! :(");
     }
 
-    public void RemoveDuplicates(GameObject duplicate)
+    public void RemoveDuplicate(GameObject duplicate)
     {
         _duplicates.Remove(duplicate);
+        RemoveSticker(duplicate.GetComponent<Duplicate>().index);
+
+        DOVirtual.DelayedCall(0.1f, () =>
+        {
+            Destroy(duplicate);
+        });
+        
     }
 
     public void CleanDuplicates()

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 
 
-public class PlayerActions : MonoBehaviour
+public class PlayerActions : MonoBehaviour, IDuplicatable
 {
     #region Script References
     private PlayerMovement _playerMovement;
@@ -79,7 +79,7 @@ public class PlayerActions : MonoBehaviour
 
     private void KissSelf(InputAction.CallbackContext context)
     {
-        this.GetComponent<PlayerDuplicates>().OnDuplicate();
+        OnDuplicate();
     }
 
     private void CheckForContact()
@@ -97,17 +97,33 @@ public class PlayerActions : MonoBehaviour
         // Cast a raycast
         if (hit.collider != null)
         {
-            // If it dosn't have the Duplicate script, can move forward to the duplicating process
-            if(!hit.collider.TryGetComponent<Duplicate>(out var hasDuplicateScript))
+            // If the collider hit has the IDuplicatable interface
+            if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
             {
-                // If the collider hit has the IDuplicatable interface
-                if (hit.collider.TryGetComponent<IDuplicatable>(out var duplicatable))
+                // Checks if it dosn't have the Duplicate script
+                if (!hit.collider.TryGetComponent<Duplicate>(out var hasDuplicateScript))
                 {
                     // Duplicate Logic
                     hit.collider.GetComponent<IDuplicatable>().OnDuplicate();
                 }
+                else
+                {
+                    hit.collider.GetComponent<IDuplicatable>().OnUndoDuplicate();
+                }
             }
         }
+    }
+    #endregion
+
+    #region Duplication Related Functions
+    public void OnDuplicate()
+    {
+        FindFirstObjectByType<StickerManager>().AddDuplicate(this.gameObject);
+    }
+
+    public void OnUndoDuplicate()
+    {
+        FindFirstObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
     }
     #endregion
 }

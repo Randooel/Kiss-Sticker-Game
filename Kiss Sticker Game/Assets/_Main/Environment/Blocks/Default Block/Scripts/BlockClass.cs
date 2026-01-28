@@ -16,13 +16,12 @@ public class BlockClass : MonoBehaviour, IDuplicatable
     #region Handle Duplication
     public void OnDuplicate()
     {
-        var duplicate = Instantiate(this.gameObject);
-        FindFirstObjectByType<StickerManager>().AddDuplicate(duplicate);
+        FindFirstObjectByType<StickerManager>().AddDuplicate(this.gameObject);
     }
 
     public void OnUndoDuplicate()
     {
-        Debug.Log("Undo Duplicate!");
+        FindFirstObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
     }
     #endregion
 }

@@ -66,6 +66,25 @@ public class PlayerMovement : MonoBehaviour
 
         // Updates the player position based on the direction, moveSpeed and game time
         this.transform.position += new Vector3(direction.x, direction.y, 0) * _moveSpeed * Time.deltaTime;
+
+        CheckMovement();
+    }
+
+    private void CheckMovement()
+    {
+        Vector2 movementInput = _moveAction.ReadValue<Vector2>();
+
+        // If player is walking
+        if (movementInput.magnitude > 0)
+        {
+            // Play walk animation
+            _playerAnimations.PlayWalk();
+        }
+        else
+        {
+            // Play idle animation
+            _playerAnimations.PlayIdle();
+        }
     }
 
     // Activated once the _moveAction is performed
@@ -99,20 +118,6 @@ public class PlayerMovement : MonoBehaviour
     public void EnableMovement()
     {
         ToggleMovement(true);
-
-        Vector2 movementInput = _moveAction.ReadValue<Vector2>();
-
-        // If player is walking
-        if (movementInput.magnitude > 0)
-        {
-            // Play walk animation
-            _playerAnimations.PlayWalk();
-        }
-        else
-        {
-            // Play idle animation
-            _playerAnimations.PlayIdle();
-        }
     }
     public void DisableMovement()
     {
@@ -123,10 +128,7 @@ public class PlayerMovement : MonoBehaviour
     #region Animation Functions
     public void PlayIdleAnimation(InputAction.CallbackContext context)
     {
-        if(CanMove)
-        {
-            _playerAnimations.PlayIdle();
-        }
+        _playerAnimations.PlayIdle();
     }
 
     public void PlayWalkAnimation(InputAction.CallbackContext context)
