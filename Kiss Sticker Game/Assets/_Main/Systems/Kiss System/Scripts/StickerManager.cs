@@ -79,11 +79,7 @@ public class StickerManager : MonoBehaviour
         {
             var duplicate = Instantiate(original);
 
-            _duplicates.Add(duplicate);
-            duplicate.transform.parent = _duplicateParent;
-            duplicate.AddComponent<Duplicate>().index = _stickers.Count - _availableStickers;
-
-            AddSticker(duplicate.transform);
+            ConfigureDuplicate(duplicate);
         }
         else Debug.Log("Can't duplicate. No stickers left! :(");
     }
@@ -98,6 +94,15 @@ public class StickerManager : MonoBehaviour
             Destroy(duplicate);
         });
         
+    }
+
+    public void ConfigureDuplicate(GameObject duplicate)
+    {
+        _duplicates.Add(duplicate);
+        duplicate.transform.parent = _duplicateParent;
+        duplicate.AddComponent<Duplicate>().index = _stickers.Count - _availableStickers;
+
+        AddSticker(duplicate.transform);
     }
 
     public void CleanDuplicates()

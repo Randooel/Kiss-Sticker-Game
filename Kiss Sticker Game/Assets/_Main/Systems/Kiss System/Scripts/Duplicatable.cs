@@ -58,11 +58,11 @@ public class Duplicatable : MonoBehaviour
 
 
     #region Handle Duplication
-    public void OnDuplicate()
+    public virtual void OnDuplicate()
     {
         FindFirstObjectByType<StickerManager>().AddDuplicate(this.gameObject);
     }
-    public void OnUndoDuplicate()
+    public virtual void OnUndoDuplicate()
     {
         FindFirstObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
     }

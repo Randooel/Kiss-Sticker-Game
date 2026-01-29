@@ -120,4 +120,15 @@ public class PlayerActions : Duplicatable
         }
     }
     #endregion
+
+    #region Handle Duplicate
+    public override void OnDuplicate()
+    {
+        var playerClone = Instantiate(this.gameObject);
+        playerClone.GetComponent<PlayerMovement>().CanMove = true;
+
+        var stickerManager = FindFirstObjectByType<StickerManager>();
+        stickerManager.ConfigureDuplicate(playerClone);
+    }
+    #endregion
 }
