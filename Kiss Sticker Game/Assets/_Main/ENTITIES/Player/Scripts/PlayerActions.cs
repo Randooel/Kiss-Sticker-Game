@@ -7,12 +7,12 @@ using UnityEngine.InputSystem;
 public class PlayerActions : Duplicatable
 {
     #region Script References
+    [Title("Script References")]
     private PlayerMovement _playerMovement;
+    private PlayerAnimations _playerAnimations;
     #endregion
 
     #region Declaring References
-    [Title("Script References")]
-    private PlayerAnimations _playerAnimations;
     #endregion
 
 
@@ -66,10 +66,10 @@ public class PlayerActions : Duplicatable
     {
         if(_playerMovement.CanMove)
         {
-            _playerAnimations.PlayKiss();
-
             //Disables movement. It is activated again with an animation event in the Kiss animation
             _playerMovement.DisableMovement();
+
+            _playerAnimations.PlayKiss();
 
             // Checks collision and activates the duplicate logic
             CheckForContact();
@@ -79,7 +79,13 @@ public class PlayerActions : Duplicatable
 
     private void KissSelf(InputAction.CallbackContext context)
     {
-        OnDuplicate();
+        if(_playerMovement.CanMove)
+        {
+            _playerMovement.DisableMovement();
+
+            _playerAnimations.PlayKissSelf();   
+            OnDuplicate();
+        }
     }
 
     private void CheckForContact()
@@ -112,6 +118,17 @@ public class PlayerActions : Duplicatable
                 }
             }
         }
+    }
+    #endregion
+
+    #region Handle Duplicate
+    public override void OnDuplicate()
+    {
+        var playerClone = Instantiate(this.gameObject);
+        playerClone.GetComponent<PlayerMovement>().CanMove = true;
+
+        var stickerManager = FindFirstObjectByType<StickerManager>();
+        stickerManager.ConfigureDuplicate(playerClone);
     }
     #endregion
 }

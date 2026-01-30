@@ -31,5 +31,10 @@ public class PlayerAnimations : MonoBehaviour
     {
         _animator.Play("Kiss");
     }
+
+    public void PlayKissSelf()
+    {
+        _animator.Play("KissSelf");
+    }
     #endregion
 }

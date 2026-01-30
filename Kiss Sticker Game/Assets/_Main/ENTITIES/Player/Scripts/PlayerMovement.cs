@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
     #region Declaring References
     [Title("Script References")]
+    private PlayerActions _playerActions;
     private PlayerAnimations _playerAnimations;
     #endregion
 
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         _moveAction.performed += FlipVisualRotation;
         _moveAction.performed += PlayWalkAnimation;
 
-        _moveAction.canceled += PlayIdleAnimation;
+        //_moveAction.canceled += PlayIdleAnimation;
     }
 
     private void OnDisable()
@@ -41,11 +42,12 @@ public class PlayerMovement : MonoBehaviour
         _moveAction.performed -= FlipVisualRotation;
         _moveAction.performed -= PlayWalkAnimation;
 
-        _moveAction.canceled -= PlayIdleAnimation;
+        //_moveAction.canceled -= PlayIdleAnimation;
     }
 
     void Start()
     {
+        _playerActions = GetComponent<PlayerActions>();
         _playerAnimations = GetComponent<PlayerAnimations>();
     }
     #endregion
