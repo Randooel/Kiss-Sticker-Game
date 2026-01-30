@@ -1,3 +1,9 @@
 name: First_Workflow 
 # Action that triggers the worlkflow
 on: workflow_dispatch  # [workflow_dispatch] let's me trigger the workflow manually
+jobs:
+  first_job:
+    runs-on: ubuntu-latest # The runner defines the environment the job's steps will be executed
+    steps:
+      - name: Print Greetings
+        run: echo "Hello World" # echo is equivalent to print
