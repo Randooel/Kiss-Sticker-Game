@@ -1,49 +1,47 @@
-# This worlflow is based on the GameCI documentation 
-
 name: Build project
 
-#on: [push, pull_request]
-on: 
+on:
+  workflow_dispatch: 
   push:
     branches:
-      - Build # Trigger build on push to 'build' branch
-  workflow_dispatch: # Manual trigger
-  
+      - build
+
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false # Guarantees that even if one build fails the other ones will still build
+      fail-fast: false
       matrix:
         targetPlatform:
-          #- StandaloneOSX # Build a macOS standalone (Intel 64-bit).
-          - StandaloneWindows # Build a Windows standalone.
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          #- StandaloneLinux64 # Build a Linux 64-bit standalone.
-          #- iOS # Build an iOS player.
-          #- Android # Build an Android .apk standalone app.
-          - WebGL # WebGL.
+          - Android
+          - WebGL
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           lfs: true
+
+      # Limpeza agressiva antes de qualquer operação
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
-          android: false 
+          tool-cache: true # Aumenta drasticamente o espaço livre
+          android: true
           dotnet: true
           haskell: true
           large-packages: true
-          docker-images: false
+          swap-storage: true
+          docker-images: true
+
       - uses: actions/cache@v3
         with:
-          path: Kiss Sticker Game/Library
-          key: Library-${{ matrix.targetPlatform }}
-          restore-keys: Library-
-      - if: matrix.targetPlatform == 'Android'
-        uses: jlumbroso/free-disk-space@v1.3.1
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.targetPlatform }}-
+            Library-
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -51,10 +49,9 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          projectPath: "Kiss Sticker Game"
-          unityVersion: 6000.2.6f2
-          buildMethod: UnityBuilder.BuildInternal.Build
-          customParameters: -p -logFile /dev/stdout
+          versioning: Semantic
+          buildVersion: 0.2.${{ github.run_number }}
+
       - uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}
