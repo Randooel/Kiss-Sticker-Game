@@ -5,5 +5,5 @@ using UnityEngine;
 
 public class Duplicate : MonoBehaviour
 {
-    public int index;
+    public Transform sticker;
 }

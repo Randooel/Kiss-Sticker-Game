@@ -11,9 +11,8 @@ public class StickerManager : MonoBehaviour
     [SerializeField] private Transform _stickerParent;
 
     [Space(10)]
-    [SerializeField, ReadOnly] private List<int> _availableStickers = new List<int>();
-
-    [Space(5)]
+    [SerializeField, ReadOnly] private int _maxStickers;
+    [Space(10)]
     [SerializeField] private List<Transform> _stickers = new List<Transform>();
     #endregion
 
@@ -27,14 +26,11 @@ public class StickerManager : MonoBehaviour
     void Start()
     {
         #region Setting Stickers Up
+        _maxStickers = _stickers.Count;
+
         foreach(var sticker in _stickers)
         {
             sticker.gameObject.SetActive(false);
-        }
-
-        for(int i = 0; i < _stickers.Count; i++)
-        {
-            _availableStickers.Add(i);
         }
         #endregion
     }
@@ -48,8 +44,8 @@ public class StickerManager : MonoBehaviour
     public bool CheckStickers()
     {
         // If it has stickers left, lets the duplicate process continue. Else doesn't
-        var aStickers = _availableStickers.Count;
-        if (aStickers <= _stickers.Count && aStickers > 0)
+        var availableStickers = _stickers.Count;
+        if (availableStickers <= _maxStickers && availableStickers > 0)
         {
             return true;
         }
@@ -58,47 +54,25 @@ public class StickerManager : MonoBehaviour
 
     private void AddSticker(Transform duplicate)
     {
-        var index = duplicate.GetComponent<Duplicate>().index;
+        var index = _stickers.Count - 1;
         var sticker = _stickers[index];
 
         sticker.gameObject.SetActive(true);
         sticker.position = duplicate.position;
         sticker.parent = duplicate;
-        
-        HandleStickerIndex(true, index);
+
+        _stickers.Remove(_stickers[index]);
     }
 
-    private void RemoveSticker(int index)
+    private void RemoveSticker(Duplicate duplicate)
     {
-        var sticker = _stickers[index];
+        var sticker = duplicate.sticker;
 
         sticker.parent = _stickerParent;
         sticker.position = _stickerParent.position;
         sticker.gameObject.SetActive(false);
 
-        HandleStickerIndex(false, index);
-    }
-
-    private void HandleStickerIndex(bool add, int index)
-    {
-        if (add)
-        {
-            if(CheckStickers())
-            {
-                for (int i = 0; i < _stickers.Count; i++)
-                {
-                    if (_availableStickers[i] == index)
-                    {
-                        _availableStickers.Remove(_availableStickers[i]);
-                        return;
-                    }
-                }
-            }
-        }
-        else
-        {
-            _availableStickers.Add(index);
-        }
+        _stickers.Add(sticker);
     }
     #endregion
 
@@ -111,26 +85,29 @@ public class StickerManager : MonoBehaviour
 
             ConfigureDuplicate(duplicate);
         }
-        else Debug.Log("Can't duplicate. No stickers left! :(");
+        else Debug.Log("Can't duplicate. No stickers left! :("); return;
     }
 
     public void RemoveDuplicate(GameObject duplicate)
     {
         _duplicates.Remove(duplicate);
-        RemoveSticker(duplicate.GetComponent<Duplicate>().index);
+        RemoveSticker(duplicate.GetComponent<Duplicate>());
 
+        Destroy(duplicate);
+
+        /*
         DOVirtual.DelayedCall(0.1f, () =>
         {
             Destroy(duplicate);
         });
-        
+        */
     }
 
     public void ConfigureDuplicate(GameObject duplicate)
     {
         _duplicates.Add(duplicate);
         duplicate.transform.parent = _duplicateParent;
-        duplicate.AddComponent<Duplicate>().index = _stickers.Count - _availableStickers.Count;
+        duplicate.AddComponent<Duplicate>().sticker = _stickers[_stickers.Count - 1];
 
         AddSticker(duplicate.transform);
     }
