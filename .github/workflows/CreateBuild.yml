@@ -29,6 +29,14 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          android: false 
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
       - uses: actions/cache@v3
         with:
           path: Kiss Sticker Game/Library
@@ -44,6 +52,7 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           projectPath: "Kiss Sticker Game"
+          buildMethod: UnityBuilder.BuildInternal.Build
       - uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}
