@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class StickerManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class StickerManager : MonoBehaviour
     [SerializeField] private Transform _stickerParent;
 
     [Space(10)]
-    [SerializeField, ReadOnly] private int _availableStickers;
+    [SerializeField, ReadOnly] private List<int> _availableStickers = new List<int>();
 
     [Space(5)]
     [SerializeField] private List<Transform> _stickers = new List<Transform>();
@@ -25,12 +26,17 @@ public class StickerManager : MonoBehaviour
 
     void Start()
     {
-        _availableStickers = _stickers.Count;
-
+        #region Setting Stickers Up
         foreach(var sticker in _stickers)
         {
             sticker.gameObject.SetActive(false);
         }
+
+        for(int i = 0; i < _stickers.Count; i++)
+        {
+            _availableStickers.Add(i);
+        }
+        #endregion
     }
 
     void Update()
@@ -42,7 +48,8 @@ public class StickerManager : MonoBehaviour
     public bool CheckStickers()
     {
         // If it has stickers left, lets the duplicate process continue. Else doesn't
-        if (_availableStickers <= _stickers.Count && _availableStickers > 0)
+        var aStickers = _availableStickers.Count;
+        if (aStickers <= _stickers.Count && aStickers > 0)
         {
             return true;
         }
@@ -51,13 +58,14 @@ public class StickerManager : MonoBehaviour
 
     private void AddSticker(Transform duplicate)
     {
-        var sticker = _stickers[_availableStickers - 1];
+        var index = duplicate.GetComponent<Duplicate>().index;
+        var sticker = _stickers[index];
 
         sticker.gameObject.SetActive(true);
         sticker.position = duplicate.position;
         sticker.parent = duplicate;
-
-        _availableStickers--;
+        
+        HandleStickerIndex(true, index);
     }
 
     private void RemoveSticker(int index)
@@ -68,7 +76,29 @@ public class StickerManager : MonoBehaviour
         sticker.position = _stickerParent.position;
         sticker.gameObject.SetActive(false);
 
-        _availableStickers++;
+        HandleStickerIndex(false, index);
+    }
+
+    private void HandleStickerIndex(bool add, int index)
+    {
+        if (add)
+        {
+            if(CheckStickers())
+            {
+                for (int i = 0; i < _stickers.Count; i++)
+                {
+                    if (_availableStickers[i] == index)
+                    {
+                        _availableStickers.Remove(_availableStickers[i]);
+                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            _availableStickers.Add(index);
+        }
     }
     #endregion
 
@@ -100,7 +130,7 @@ public class StickerManager : MonoBehaviour
     {
         _duplicates.Add(duplicate);
         duplicate.transform.parent = _duplicateParent;
-        duplicate.AddComponent<Duplicate>().index = _stickers.Count - _availableStickers;
+        duplicate.AddComponent<Duplicate>().index = _stickers.Count - _availableStickers.Count;
 
         AddSticker(duplicate.transform);
     }
