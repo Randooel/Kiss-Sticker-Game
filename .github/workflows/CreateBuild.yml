@@ -52,7 +52,9 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           projectPath: "Kiss Sticker Game"
+          unityVersion: 6000.2.6f2
           buildMethod: UnityBuilder.BuildInternal.Build
+          customParameters: -p -logFile /dev/stdout
       - uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}
