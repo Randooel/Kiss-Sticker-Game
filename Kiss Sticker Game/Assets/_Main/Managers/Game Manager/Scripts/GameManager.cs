@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     {
         _puzzleResultUI.SetActive(true);
 
-        _playerMovement.DisableMovement();
+        //_playerMovement.DisableMovement();
 
         if (win)
         {
