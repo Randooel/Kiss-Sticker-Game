@@ -13,7 +13,7 @@ public class StickerManager : MonoBehaviour
     [Space(10)]
     [SerializeField, ReadOnly] private int _maxStickers;
     [Space(10)]
-    [SerializeField] private List<Transform> _stickers = new List<Transform>();
+    [SerializeField] private List<Transform> _availableStickers = new List<Transform>();
     #endregion
 
     #region Handle Clone Variables
@@ -26,9 +26,11 @@ public class StickerManager : MonoBehaviour
     void Start()
     {
         #region Setting Stickers Up
-        _maxStickers = _stickers.Count;
+        ResetStickers();
 
-        foreach(var sticker in _stickers)
+        _maxStickers = _availableStickers.Count;
+
+        foreach(var sticker in _availableStickers)
         {
             sticker.gameObject.SetActive(false);
         }
@@ -44,7 +46,7 @@ public class StickerManager : MonoBehaviour
     public bool CheckStickers()
     {
         // If it has stickers left, lets the duplicate process continue. Else doesn't
-        var availableStickers = _stickers.Count;
+        var availableStickers = _availableStickers.Count;
         if (availableStickers <= _maxStickers && availableStickers > 0)
         {
             return true;
@@ -54,14 +56,14 @@ public class StickerManager : MonoBehaviour
 
     private void AddSticker(Transform duplicate)
     {
-        var index = _stickers.Count - 1;
-        var sticker = _stickers[index];
+        var index = _availableStickers.Count - 1;
+        var sticker = _availableStickers[index];
 
         sticker.gameObject.SetActive(true);
         sticker.position = duplicate.position;
         sticker.parent = duplicate;
 
-        _stickers.Remove(_stickers[index]);
+        _availableStickers.Remove(_availableStickers[index]);
     }
 
     private void RemoveSticker(Duplicate duplicate)
@@ -72,7 +74,15 @@ public class StickerManager : MonoBehaviour
         sticker.position = _stickerParent.position;
         sticker.gameObject.SetActive(false);
 
-        _stickers.Add(sticker);
+        _availableStickers.Add(sticker);
+    }
+
+    private void ResetStickers()
+    {
+        foreach(Transform sticker in _stickerParent)
+        {
+            _availableStickers.Add(sticker);
+        }
     }
     #endregion
 
@@ -107,7 +117,7 @@ public class StickerManager : MonoBehaviour
     {
         _duplicates.Add(duplicate);
         duplicate.transform.parent = _duplicateParent;
-        duplicate.AddComponent<Duplicate>().sticker = _stickers[_stickers.Count - 1];
+        duplicate.AddComponent<Duplicate>().sticker = _availableStickers[_availableStickers.Count - 1];
 
         AddSticker(duplicate.transform);
     }

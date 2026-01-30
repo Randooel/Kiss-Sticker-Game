@@ -18,6 +18,9 @@ public class PlayerActions : Duplicatable
 
 
     #region Variables
+    [PropertySpace(SpaceBefore = 10, SpaceAfter = 15)]
+    [SerializeField, ReadOnly] private bool _isDuplicate;
+
     [SerializeField][Range(0, 10)] private float _raycastRange = 2;
     [SerializeField][Range(0, 5)] private float _raycastOffset = 1;
     /*
@@ -79,7 +82,7 @@ public class PlayerActions : Duplicatable
 
     private void KissSelf(InputAction.CallbackContext context)
     {
-        if(_playerMovement.CanMove)
+        if(_playerMovement.CanMove && !_isDuplicate)
         {
             _playerMovement.DisableMovement();
 
@@ -121,14 +124,18 @@ public class PlayerActions : Duplicatable
     }
     #endregion
 
-    #region Handle Duplicate
+    #region Handle Duplication
     public override void OnDuplicate()
     {
-        var playerClone = Instantiate(this.gameObject);
-        playerClone.GetComponent<PlayerMovement>().CanMove = true;
-
         var stickerManager = FindFirstObjectByType<StickerManager>();
-        stickerManager.ConfigureDuplicate(playerClone);
+        if (stickerManager.CheckStickers())
+        {
+            var playerClone = Instantiate(this.gameObject);
+            playerClone.GetComponent<PlayerMovement>().CanMove = true;
+            playerClone.GetComponent<PlayerActions>()._isDuplicate = true;
+
+            stickerManager.ConfigureDuplicate(playerClone);
+        }
     }
     #endregion
 }
