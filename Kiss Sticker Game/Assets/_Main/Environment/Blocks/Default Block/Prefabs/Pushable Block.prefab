@@ -169,6 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e336a343f72470944b1e5694ff719e26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallBlock
+  _duplicateIndex: 0
 --- !u!61 &3884351790545955197
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -227,7 +228,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
