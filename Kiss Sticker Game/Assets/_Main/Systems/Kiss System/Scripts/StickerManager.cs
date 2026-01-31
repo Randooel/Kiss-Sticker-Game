@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 using Unity.VisualScripting;
+using static UnityEngine.UI.Image;
 
 public class StickerManager : MonoBehaviour
 {
+    #region References
+    private DOAnimations _doAnimations;
+    #endregion
     #region Stickers Related
     [Title("Stiker Related")]
     [SerializeField] private Transform _stickerParent;
@@ -25,6 +29,10 @@ public class StickerManager : MonoBehaviour
 
     void Start()
     {
+        #region Setting References Up
+        _doAnimations = GetComponent<DOAnimations>();
+        #endregion
+
         #region Setting Stickers Up
         ResetStickers();
 
@@ -93,9 +101,15 @@ public class StickerManager : MonoBehaviour
         {
             var duplicate = Instantiate(original);
 
-            ConfigureDuplicate(duplicate);
+            ConfigureDuplicate(duplicate, original.transform);
         }
         else Debug.Log("Can't duplicate. No stickers left! :("); return;
+    }
+
+    public void OnRemoveDuplicate(GameObject duplicate)
+    {
+        var original = duplicate.GetComponent<Duplicate>().original;
+        _doAnimations.DOUndoDuplicate(duplicate.transform, original);
     }
 
     public void RemoveDuplicate(GameObject duplicate)
@@ -113,11 +127,13 @@ public class StickerManager : MonoBehaviour
         */
     }
 
-    public void ConfigureDuplicate(GameObject duplicate)
+    public void ConfigureDuplicate(GameObject duplicate, Transform original)
     {
         _duplicates.Add(duplicate);
         duplicate.transform.parent = _duplicateParent;
-        duplicate.AddComponent<Duplicate>().sticker = _availableStickers[_availableStickers.Count - 1];
+        var dC = duplicate.AddComponent<Duplicate>();
+        dC.sticker = _availableStickers[_availableStickers.Count - 1];
+        dC.original = original;
 
         AddSticker(duplicate.transform);
     }

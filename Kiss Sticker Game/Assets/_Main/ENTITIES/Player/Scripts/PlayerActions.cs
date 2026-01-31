@@ -134,7 +134,7 @@ public class PlayerActions : Duplicatable
             playerClone.GetComponent<PlayerMovement>().CanMove = true;
             playerClone.GetComponent<PlayerActions>()._isDuplicate = true;
 
-            stickerManager.ConfigureDuplicate(playerClone);
+            stickerManager.ConfigureDuplicate(playerClone, this.transform);
         }
     }
     #endregion

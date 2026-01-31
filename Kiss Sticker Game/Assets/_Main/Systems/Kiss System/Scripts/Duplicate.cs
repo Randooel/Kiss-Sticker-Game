@@ -6,4 +6,6 @@ using UnityEngine;
 public class Duplicate : MonoBehaviour
 {
     public Transform sticker;
+
+    public Transform original;
 }
