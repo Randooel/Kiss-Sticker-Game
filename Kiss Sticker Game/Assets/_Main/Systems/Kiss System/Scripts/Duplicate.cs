@@ -26,6 +26,8 @@ public class Duplicate : MonoBehaviour
     private void Start()
     {
         //_rb = this.GetComponent<Rigidbody2D>();
+
+        DODuplicateAnim();
     }
 
     private void FixedUpdate()
@@ -44,6 +46,21 @@ public class Duplicate : MonoBehaviour
             DODestruction();
         }
     }
+
+    #region Duplicate Animation
+    private void DODuplicateAnim()
+    {
+        var dur = 0.05f;
+
+        Sequence s = DOTween.Sequence();
+        s.Append(this.transform.DOScale(Vector3.zero, 0));
+        s.Append(this.transform.DOScale(this.transform.localScale * 1.25f, dur));
+        s.Append(this.transform.DOScale(this.transform.localScale, dur)).OnComplete(() =>
+        {
+            this.DOKill();
+        });
+    }
+    #endregion
 
     #region Undo Duplication Animation
     public void ReturnToOriginal()
@@ -113,17 +130,21 @@ public class Duplicate : MonoBehaviour
         });
 
         // Shakes the Original object when they collide
-        Original.DOKill();
         var duration = 0.5f;
         var strength = (_distance / 5) * 2;
 
+        /*
         Debug.Log("Distance: " + _distance);
         Debug.Log("Strength: " + strength);
+        */
 
         Original.DOShakeScale(duration, strength);
         Original.DOShakeRotation(duration, strength);
-        Original.DOShakePosition(duration, strength).OnComplete(() =>
+        Original.DOShakePosition(duration, strength);
+
+        DOVirtual.DelayedCall(duration, () =>
         {
+            Debug.LogWarning("KILLED");
             Original.DOKill();
         });
     }
