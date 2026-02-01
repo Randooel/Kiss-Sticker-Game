@@ -64,7 +64,7 @@ public class Duplicatable : MonoBehaviour
     }
     public virtual void OnUndoDuplicate()
     {
-        FindFirstObjectByType<StickerManager>().OnRemoveDuplicate(this.gameObject);
+        FindFirstObjectByType<StickerManager>().RemoveDuplicatePreparation(this.gameObject);
     }
     #endregion
 }

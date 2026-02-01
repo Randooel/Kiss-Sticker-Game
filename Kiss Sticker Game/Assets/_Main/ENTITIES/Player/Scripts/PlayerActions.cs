@@ -74,9 +74,9 @@ public class PlayerActions : Duplicatable
 
             _playerAnimations.PlayKiss();
 
-            // Checks collision and activates the duplicate logic
+            // Checks collision with a Duplicatable object and activates the duplicate logic
             CheckForContact();
-        }
+        }  
         else return;
     }
 

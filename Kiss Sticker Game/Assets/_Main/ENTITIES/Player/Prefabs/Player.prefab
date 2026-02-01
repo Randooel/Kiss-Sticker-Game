@@ -314,8 +314,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerActions
   _isDuplicate: 0
-  _raycastRange: 1
-  _raycastOffset: 1.25
+  _raycastRange: 0.5
+  _raycastOffset: 1
   _inputAsset: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
 --- !u!61 &6334317776290052129
 BoxCollider2D:

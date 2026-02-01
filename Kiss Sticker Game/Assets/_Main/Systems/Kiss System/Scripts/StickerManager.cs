@@ -7,9 +7,6 @@ using static UnityEngine.UI.Image;
 
 public class StickerManager : MonoBehaviour
 {
-    #region References
-    private DOAnimations _doAnimations;
-    #endregion
     #region Stickers Related
     [Title("Stiker Related")]
     [SerializeField] private Transform _stickerParent;
@@ -17,7 +14,7 @@ public class StickerManager : MonoBehaviour
     [Space(10)]
     [SerializeField, ReadOnly] private int _maxStickers;
     [Space(10)]
-    [SerializeField] private List<Transform> _availableStickers = new List<Transform>();
+    [SerializeField] private List<Sticker> _availableStickers = new List<Sticker>();
     #endregion
 
     #region Handle Clone Variables
@@ -29,10 +26,6 @@ public class StickerManager : MonoBehaviour
 
     void Start()
     {
-        #region Setting References Up
-        _doAnimations = GetComponent<DOAnimations>();
-        #endregion
-
         #region Setting Stickers Up
         ResetStickers();
 
@@ -67,19 +60,19 @@ public class StickerManager : MonoBehaviour
         var index = _availableStickers.Count - 1;
         var sticker = _availableStickers[index];
 
+        sticker.transform.parent = duplicate;
+        sticker.transform.position = duplicate.position;
         sticker.gameObject.SetActive(true);
-        sticker.position = duplicate.position;
-        sticker.parent = duplicate;
+        sticker.DOAddAnim();
 
         _availableStickers.Remove(_availableStickers[index]);
     }
 
-    private void RemoveSticker(Duplicate duplicate)
+    public void RemoveSticker(Sticker sticker)
     {
-        var sticker = duplicate.sticker;
-
-        sticker.parent = _stickerParent;
-        sticker.position = _stickerParent.position;
+        sticker.transform.parent = _stickerParent;
+        sticker.transform.position = _stickerParent.position;
+        sticker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         sticker.gameObject.SetActive(false);
 
         _availableStickers.Add(sticker);
@@ -89,7 +82,7 @@ public class StickerManager : MonoBehaviour
     {
         foreach(Transform sticker in _stickerParent)
         {
-            _availableStickers.Add(sticker);
+            _availableStickers.Add(sticker.GetComponent<Sticker>());
         }
     }
     #endregion
@@ -106,34 +99,36 @@ public class StickerManager : MonoBehaviour
         else Debug.Log("Can't duplicate. No stickers left! :("); return;
     }
 
-    public void OnRemoveDuplicate(GameObject duplicate)
+    // Calls duplicate and sticker remove animations. Is called once the player kiss a GameObject with the Duplicate script.
+    public void RemoveDuplicatePreparation(GameObject duplicate)
     {
-        var original = duplicate.GetComponent<Duplicate>().original;
-        _doAnimations.DOUndoDuplicate(duplicate.transform, original);
+        // Sets the duplicate variables
+        var dC = duplicate.GetComponent<Duplicate>();
+        var original = dC.original;
+        dC.hasSticker = false; // Once this is changed, the Duplicate FixedUpdate will automatically call the ReturnToOriginal()
+
+        var sticker = dC.sticker;
+        sticker.DORemoveAnim();
     }
 
+    // Destroy the duplicate. Should only be called once the duplicate hits the original.
     public void RemoveDuplicate(GameObject duplicate)
     {
         _duplicates.Remove(duplicate);
-        RemoveSticker(duplicate.GetComponent<Duplicate>());
+        //RemoveSticker(duplicate.GetComponent<Duplicate>());
 
         Destroy(duplicate);
-
-        /*
-        DOVirtual.DelayedCall(0.1f, () =>
-        {
-            Destroy(duplicate);
-        });
-        */
     }
 
     public void ConfigureDuplicate(GameObject duplicate, Transform original)
     {
         _duplicates.Add(duplicate);
         duplicate.transform.parent = _duplicateParent;
+
         var dC = duplicate.AddComponent<Duplicate>();
         dC.sticker = _availableStickers[_availableStickers.Count - 1];
         dC.original = original;
+        dC.hasSticker = true;
 
         AddSticker(duplicate.transform);
     }

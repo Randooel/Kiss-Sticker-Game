@@ -151,8 +151,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.994, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1359873506856324541}
   m_Father: {fileID: 0}
@@ -169,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e336a343f72470944b1e5694ff719e26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallBlock
-  _duplicateIndex: 0
 --- !u!61 &3884351790545955197
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -229,10 +228,10 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.0001
-  m_LinearDamping: 0
+  m_LinearDamping: 1.5
   m_AngularDamping: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b5a2b673cba43ef42a56f408ca3056c6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
