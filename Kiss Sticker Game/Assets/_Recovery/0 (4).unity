@@ -1410,6 +1410,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7689541004252919784, guid: 64acbfd2333d7b640afcaa2a31535492, type: 3}
+      propertyPath: m_Mass
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7711574445633968624, guid: 64acbfd2333d7b640afcaa2a31535492, type: 3}
       propertyPath: m_Name
       value: Pushable Block

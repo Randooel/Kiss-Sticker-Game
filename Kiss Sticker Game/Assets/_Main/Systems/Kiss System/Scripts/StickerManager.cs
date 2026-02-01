@@ -104,10 +104,10 @@ public class StickerManager : MonoBehaviour
     {
         // Sets the duplicate variables
         var dC = duplicate.GetComponent<Duplicate>();
-        var original = dC.original;
-        dC.hasSticker = false; // Once this is changed, the Duplicate FixedUpdate will automatically call the ReturnToOriginal()
+        var original = dC.Original;
+        dC.HasSticker = false; // Once this is changed, the Duplicate FixedUpdate will automatically call the ReturnToOriginal()
 
-        var sticker = dC.sticker;
+        var sticker = dC.Sticker;
         sticker.DORemoveAnim();
     }
 
@@ -126,9 +126,9 @@ public class StickerManager : MonoBehaviour
         duplicate.transform.parent = _duplicateParent;
 
         var dC = duplicate.AddComponent<Duplicate>();
-        dC.sticker = _availableStickers[_availableStickers.Count - 1];
-        dC.original = original;
-        dC.hasSticker = true;
+        dC.Sticker = _availableStickers[_availableStickers.Count - 1];
+        dC.Original = original;
+        dC.HasSticker = true;
 
         AddSticker(duplicate.transform);
     }

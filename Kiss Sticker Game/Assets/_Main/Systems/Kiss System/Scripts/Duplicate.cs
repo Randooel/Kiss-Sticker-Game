@@ -8,27 +8,29 @@ using UnityEngine;
 public class Duplicate : MonoBehaviour
 {
     [Title("Transform References")]
-    public Sticker sticker;
-    public Transform original;
-    private Rigidbody2D rb;
+    public Sticker Sticker;
+    public Transform Original;
+    //private Rigidbody2D _rb;
 
     [Space(10)]
-    public bool hasSticker;
+    public bool HasSticker;
 
     [Title("Speed Variables")]
     [Space(10)]
-    public float force = 200f;
-    public float acceleration = 0.5f; // Has to be a small value, since it will be increased every frame on the FixedUpdate()
-    public float currentAcceleration = 0f;
+    private float _force = 50f; // using _rb force = 200f;
+    private float _distance;
+
+    public float Acceleration = 0.5f; // Has to be a small value, since it will be increased every frame on the FixedUpdate()
+    public float CurrentAcceleration = 0f;
 
     private void Start()
     {
-        rb = this.GetComponent<Rigidbody2D>();
+        //_rb = this.GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
-        if(!hasSticker)
+        if(!HasSticker)
         {
             ReturnToOriginal();
         }
@@ -36,7 +38,7 @@ public class Duplicate : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!hasSticker && collision.transform == original)
+        if (!HasSticker && collision.transform == Original)
         {
             this.DOKill();
             DODestruction();
@@ -46,15 +48,26 @@ public class Duplicate : MonoBehaviour
     #region Undo Duplication Animation
     public void ReturnToOriginal()
     {
-        float distance = Vector2.Distance(this.transform.position, original.position);
+        #region DOTween with acceleration
+        // Moves this duplicate towards the original position
+        _distance = Vector3.Distance(this.transform.position, Original.position);
+        this.transform.DOLocalMove(Original.position, _force).SetSpeedBased().SetEase(Ease.InQuad);
+        #endregion
+
+        #region rb AddForce
+        /*
+        float distance = Vector2.Distance(this.transform.position, Original.position);
 
         // Direction = destiny - origin
-        Vector2 direction = (original.position - this.transform.position).normalized;
+        Vector2 direction = (Original.position - this.transform.position).normalized;
 
-        currentAcceleration = Mathf.MoveTowards(currentAcceleration, force, acceleration * Time.fixedDeltaTime);
+        CurrentAcceleration = Mathf.MoveTowards(CurrentAcceleration, Force, Acceleration * Time.fixedDeltaTime);
 
-        rb.AddForce(direction * force * currentAcceleration, ForceMode2D.Force);
+        _rb.AddForce(direction * Force * CurrentAcceleration, ForceMode2D.Force);
+        */
+        #endregion
 
+        #region First DOTween Attempt
         /*
         // Gets the original direction (relative to the duplicate)
         var direction = (duplicate.position - original.position).normalized;
@@ -79,6 +92,7 @@ public class Duplicate : MonoBehaviour
             }
         });
         */
+        #endregion
     }
 
     public void DODestruction()
@@ -86,7 +100,7 @@ public class Duplicate : MonoBehaviour
         //this.DOKill();
 
         // Actually it doesn't have a sticker. This is used only to cancel the ReturnToOriginal() from running in the FixedUpdate()
-        hasSticker = true;
+        HasSticker = true;
         //rb.simulated = false;
 
         var dur = 0.1f;
@@ -98,6 +112,20 @@ public class Duplicate : MonoBehaviour
             FindAnyObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
         });
 
+        // Shakes the Original object when they collide
+        Original.DOKill();
+        var duration = 0.5f;
+        var strength = (_distance / 5) * 2;
+
+        Debug.Log("Distance: " + _distance);
+        Debug.Log("Strength: " + strength);
+
+        Original.DOShakeScale(duration, strength);
+        Original.DOShakeRotation(duration, strength);
+        Original.DOShakePosition(duration, strength).OnComplete(() =>
+        {
+            Original.DOKill();
+        });
     }
     #endregion
 }
