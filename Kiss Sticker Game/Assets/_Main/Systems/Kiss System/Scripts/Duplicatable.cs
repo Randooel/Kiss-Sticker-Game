@@ -7,9 +7,17 @@ using UnityEngine;
 
 public class Duplicatable : MonoBehaviour
 {
+    public Transform Cracks;
+
+    private void Start()
+    {
+        //_cracks = this.transform.Find("Cracks");
+        Cracks.gameObject.SetActive(false);
+    }
+
     #region State Related
     #region State Machine
-    protected enum State
+    public enum State
     {
         Normal,
         Damaged,
@@ -18,19 +26,18 @@ public class Duplicatable : MonoBehaviour
 
     protected State _currentState;
 
-    protected void SwitchState(State newState)
-    {
-        _currentState = newState;
+    public State CurrentState => _currentState;
 
+    public void SwitchState()
+    {
         switch(_currentState)
         {
+            // Since this switch is only called during colllision with duplicates, the states call the next state
+            // Ex: If State was Normal, since it collided with a duplicate, now it is Damaged, and so on.
             case State.Normal:
-                HandleNormal();
-                break;
-            case State.Damaged:
                 HandleDamaged();
                 break;
-            case State.Broken:
+            case State.Damaged:
                 HandleBroken();
                 break;
         }
@@ -38,6 +45,7 @@ public class Duplicatable : MonoBehaviour
     #endregion
 
     #region Handle States
+    [System.Obsolete]
     protected void HandleNormal()
     {
         throw new NotImplementedException();
@@ -45,12 +53,14 @@ public class Duplicatable : MonoBehaviour
 
     private void HandleDamaged()
     {
-        throw new NotImplementedException();
+        _currentState = State.Damaged;
+        Cracks.gameObject.SetActive(true);
     }
 
     private void HandleBroken()
     {
-        throw new NotImplementedException();
+        _currentState = State.Broken;
+        this.gameObject.SetActive(false);
     }
     #endregion
     #endregion

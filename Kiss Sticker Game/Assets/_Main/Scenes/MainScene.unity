@@ -1762,10 +1762,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flag
       objectReference: {fileID: 0}
-    - target: {fileID: 3332934759977192247, guid: 3aa759820e5d84845932c5795ed2a340, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: b5a2b673cba43ef42a56f408ca3056c6, type: 2}
     - target: {fileID: 8972883940274423447, guid: 3aa759820e5d84845932c5795ed2a340, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.5

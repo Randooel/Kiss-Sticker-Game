@@ -59,6 +59,12 @@ public class Duplicate : MonoBehaviour
         {
             this.DOKill();
         });
+
+        var duplicatable = Original.GetComponent<Duplicatable>();
+        if(duplicatable.CurrentState == Duplicatable.State.Damaged)
+        {
+            this.GetComponent<Duplicatable>().Cracks.gameObject.SetActive(true);
+        }
     }
     #endregion
 
@@ -114,6 +120,7 @@ public class Duplicate : MonoBehaviour
 
     public void DODestruction()
     {
+        #region Handle Duplicate
         //this.DOKill();
 
         // Actually it doesn't have a sticker. This is used only to cancel the ReturnToOriginal() from running in the FixedUpdate()
@@ -128,6 +135,11 @@ public class Duplicate : MonoBehaviour
         {
             FindAnyObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
         });
+        #endregion
+
+        #region Handle Original
+        // Updates the Original state
+        Original.GetComponent<Duplicatable>().SwitchState();
 
         // Shakes the Original object when they collide
         var duration = 0.5f;
@@ -144,9 +156,10 @@ public class Duplicate : MonoBehaviour
 
         DOVirtual.DelayedCall(duration, () =>
         {
-            Debug.LogWarning("KILLED");
+            //Debug.LogWarning(" TWEENS KILLED");
             Original.DOKill();
         });
+        #endregion
     }
     #endregion
 }
