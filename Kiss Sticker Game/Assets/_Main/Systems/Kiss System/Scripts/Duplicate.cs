@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Duplicate : MonoBehaviour
 {
+    #region Variables
+    #region Transform References
     [Title("Transform References")]
     public Sticker Sticker;
     public Transform Original;
@@ -14,7 +16,9 @@ public class Duplicate : MonoBehaviour
 
     [Space(10)]
     public bool HasSticker;
+    #endregion
 
+    #region Speed Variables
     [Title("Speed Variables")]
     [Space(10)]
     private float _force = 50f; // using _rb force = 200f;
@@ -22,6 +26,8 @@ public class Duplicate : MonoBehaviour
 
     public float Acceleration = 0.5f; // Has to be a small value, since it will be increased every frame on the FixedUpdate()
     public float CurrentAcceleration = 0f;
+    #endregion
+    #endregion
 
     private void Start()
     {
