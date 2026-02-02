@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -126,7 +127,12 @@ public class Duplicate : MonoBehaviour
 
     public void DODestruction()
     {
-        #region Handle Duplicate
+        DODestroyDuplicate();
+        DODestroyOriginal();
+    }
+
+    public void DODestroyDuplicate()
+    {
         //this.DOKill();
 
         // Actually it doesn't have a sticker. This is used only to cancel the ReturnToOriginal() from running in the FixedUpdate()
@@ -141,9 +147,10 @@ public class Duplicate : MonoBehaviour
         {
             FindAnyObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
         });
-        #endregion
+    }
 
-        #region Handle Original
+    private void DODestroyOriginal()
+    {
         // Updates the Original state
         Original.GetComponent<Duplicatable>().SwitchState();
 
@@ -165,7 +172,6 @@ public class Duplicate : MonoBehaviour
             //Debug.LogWarning(" TWEENS KILLED");
             Original.DOKill();
         });
-        #endregion
     }
     #endregion
 }

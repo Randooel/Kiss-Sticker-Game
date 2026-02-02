@@ -9,6 +9,8 @@ public class Duplicatable : MonoBehaviour
 {
     public Transform Cracks;
 
+    public List<Duplicate> Duplicates = new List<Duplicate>();
+
     private void Start()
     {
         //_cracks = this.transform.Find("Cracks");
@@ -60,6 +62,8 @@ public class Duplicatable : MonoBehaviour
     private void HandleBroken()
     {
         _currentState = State.Broken;
+        DestroyAllDuplicates();
+
         this.gameObject.SetActive(false);
     }
     #endregion
@@ -75,6 +79,14 @@ public class Duplicatable : MonoBehaviour
     public virtual void OnUndoDuplicate()
     {
         FindFirstObjectByType<StickerManager>().RemoveDuplicatePreparation(this.gameObject);
+    }
+
+    protected void DestroyAllDuplicates()
+    {
+        foreach(var d in Duplicates)
+        {
+            d.DODestroyDuplicate();
+        }
     }
     #endregion
 }

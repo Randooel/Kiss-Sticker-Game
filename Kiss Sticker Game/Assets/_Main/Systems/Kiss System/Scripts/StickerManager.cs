@@ -90,11 +90,15 @@ public class StickerManager : MonoBehaviour
     #region Handle Duplicates 
     public void AddDuplicate(GameObject original)
     {
+        // Checks if there is any sticker left
         if (CheckStickers())
         {
             var duplicate = Instantiate(original);
 
             ConfigureDuplicate(duplicate, original.transform);
+
+            // Adds this duplicate to the original object's Duplicates list
+            original.GetComponent<Duplicatable>().Duplicates.Add(duplicate.GetComponent<Duplicate>());
         }
         else Debug.Log("Can't duplicate. No stickers left! :("); return;
     }
@@ -115,6 +119,12 @@ public class StickerManager : MonoBehaviour
     public void RemoveDuplicate(GameObject duplicate)
     {
         _duplicates.Remove(duplicate);
+
+        var dC = duplicate.GetComponent<Duplicate>();
+        var original = dC.Original;
+
+        // Removes the duplicate from the original object's Duplicates list
+        original.GetComponent<Duplicatable>().Duplicates.Remove(dC);
         //RemoveSticker(duplicate.GetComponent<Duplicate>());
 
         Destroy(duplicate);
