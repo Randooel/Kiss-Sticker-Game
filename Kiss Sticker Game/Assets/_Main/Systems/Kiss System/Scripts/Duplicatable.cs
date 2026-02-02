@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,9 @@ using UnityEngine;
 
 public class Duplicatable : MonoBehaviour
 {
+    [SerializeField] private bool _isBreakable;
+
+    [ShowIf("_isBreakable")]
     public Transform Cracks;
 
     public List<Duplicate> Duplicates = new List<Duplicate>();
@@ -32,16 +36,19 @@ public class Duplicatable : MonoBehaviour
 
     public void SwitchState()
     {
-        switch(_currentState)
+        if(_isBreakable)
         {
-            // Since this switch is only called during colllision with duplicates, the states call the next state
-            // Ex: If State was Normal, since it collided with a duplicate, now it is Damaged, and so on.
-            case State.Normal:
-                HandleDamaged();
-                break;
-            case State.Damaged:
-                HandleBroken();
-                break;
+            switch (_currentState)
+            {
+                // Since this switch is only called during colllision with duplicates, the states call the next state
+                // Ex: If State was Normal, since it collided with a duplicate, now it is Damaged, and so on.
+                case State.Normal:
+                    HandleDamaged();
+                    break;
+                case State.Damaged:
+                    HandleBroken();
+                    break;
+            }
         }
     }
     #endregion
@@ -56,7 +63,10 @@ public class Duplicatable : MonoBehaviour
     private void HandleDamaged()
     {
         _currentState = State.Damaged;
-        Cracks.gameObject.SetActive(true);
+        if(Cracks != null)
+        {
+            Cracks.gameObject.SetActive(true);
+        }
     }
 
     private void HandleBroken()
