@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         _playerAnimations.PlayWalk();
 
         var input = context.ReadValue<Vector2>();
-        Vector3 direction = new Vector3(input.x, 0, input.y);
+        Vector3 direction = new Vector3(input.x, input.y, 0);
         Vector3 offset = Vector3.Scale(direction, _moveUnit);
 
         Vector3 targetPosition = this.transform.position + direction;
@@ -111,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
             _playerAnimations.PlayIdle();
         });
     }
+
 
     private void CheckMovement()
     {
