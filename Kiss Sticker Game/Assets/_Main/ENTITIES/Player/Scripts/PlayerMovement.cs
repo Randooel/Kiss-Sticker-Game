@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,6 +23,10 @@ public class PlayerMovement : MonoBehaviour
     public bool CanMove { get => _canMove; set => _canMove = value; }
     #endregion
 
+    // DOTWEEN MOVEMENT RELATED
+    private Vector3 _moveUnit; // It is equal to the grid's cellSize
+
+
     #region Setup Functions
     void OnEnable()
     {
@@ -33,6 +38,9 @@ public class PlayerMovement : MonoBehaviour
         _moveAction.performed += FlipVisualRotation;
         _moveAction.performed += PlayWalkAnimation;
 
+        //DOTWEEN MOVEMENT
+        _moveAction.performed += DOMove;
+
         //_moveAction.canceled += PlayIdleAnimation;
     }
 
@@ -42,6 +50,9 @@ public class PlayerMovement : MonoBehaviour
         _moveAction.performed -= FlipVisualRotation;
         _moveAction.performed -= PlayWalkAnimation;
 
+        //DOTWEEN MOVEMENT
+        _moveAction.performed -= DOMove;
+
         //_moveAction.canceled -= PlayIdleAnimation;
     }
 
@@ -49,15 +60,20 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerActions = GetComponent<PlayerActions>();
         _playerAnimations = GetComponent<PlayerAnimations>();
+
+        //DOTWEEN MOVEMENT
+        _moveUnit = FindFirstObjectByType<Grid>().cellSize; // Sets _moveUnit as the Grid's cellSize
     }
     #endregion
 
     void FixedUpdate()
     {
+        /*
         if(CanMove)
         {
             Move();
         }
+        */
     }
 
     #region Move Related Functions
@@ -70,6 +86,30 @@ public class PlayerMovement : MonoBehaviour
         this.transform.position += new Vector3(direction.x, direction.y, 0) * _moveSpeed * Time.deltaTime;
 
         CheckMovement();
+    }
+
+    private void DOMove(InputAction.CallbackContext context)
+    {
+        if(!CanMove)
+        {
+            return;
+        }
+
+        CanMove = false;
+
+        _playerAnimations.PlayWalk();
+
+        var input = context.ReadValue<Vector2>();
+        Vector3 direction = new Vector3(input.x, 0, input.y);
+        Vector3 offset = Vector3.Scale(direction, _moveUnit);
+
+        Vector3 targetPosition = this.transform.position + direction;
+        this.transform.DOLocalMove(targetPosition, _moveSpeed).SetSpeedBased().OnComplete(() =>
+        {
+            CanMove = true;
+
+            _playerAnimations.PlayIdle();
+        });
     }
 
     private void CheckMovement()

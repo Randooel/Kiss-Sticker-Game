@@ -169,7 +169,7 @@ public class Duplicate : MonoBehaviour
 
         DOVirtual.DelayedCall(duration, () =>
         {
-            //Debug.LogWarning(" TWEENS KILLED");
+            Debug.LogWarning("TWEENS KILLED");
             Original.DOKill();
         });
     }
