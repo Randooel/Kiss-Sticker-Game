@@ -3600,6 +3600,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1911722477}
     m_Modifications:
+    - target: {fileID: 693592147193358452, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 693592147193358452, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1321394430823699994, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3643,6 +3651,10 @@ PrefabInstance:
     - target: {fileID: 5736996431240797499, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
       propertyPath: m_Name
       value: Level Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318985250454147702, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
