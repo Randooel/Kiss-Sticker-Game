@@ -224,8 +224,9 @@ GameObject:
   - component: {fileID: 5782763676277794126}
   - component: {fileID: 706755851513492315}
   - component: {fileID: 1824528964379517103}
-  - component: {fileID: 6701756007525175728}
   - component: {fileID: 8992112633550603128}
+  - component: {fileID: 6701756007525175728}
+  - component: {fileID: 2952536083427730897}
   - component: {fileID: 6334317776290052129}
   - component: {fileID: 6473938410616818353}
   m_Layer: 7
@@ -286,21 +287,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimations
   visual: {fileID: 659064319898609500}
---- !u!114 &6701756007525175728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233816183955135035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695b215014201404ba562be1643a2c83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  _inputAsset: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
-  _canMove: 1
-  _moveSpeed: 5
 --- !u!114 &8992112633550603128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +306,36 @@ MonoBehaviour:
   _raycastRange: 0.5
   _raycastOffset: 1
   _inputAsset: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+--- !u!114 &6701756007525175728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233816183955135035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695b215014201404ba562be1643a2c83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  _inputAsset: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+  _canMove: 1
+  _moveSpeed: 5
+--- !u!114 &2952536083427730897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233816183955135035}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebdcf6dbbb323b34a9995377abf30c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGridMovement
+  _inputAsset: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+  _canMove: 1
+  _moveSpeed: 10
 --- !u!61 &6334317776290052129
 BoxCollider2D:
   m_ObjectHideFlags: 0
