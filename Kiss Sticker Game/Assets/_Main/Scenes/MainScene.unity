@@ -612,17 +612,6 @@ Transform:
   - {fileID: 859332178}
   m_Father: {fileID: 630204369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &720349103 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5819744060552481573, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
-  m_PrefabInstance: {fileID: 3842657408062868886}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a5e9ef0a0cfed40a4e8051eee6e43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
 --- !u!1 &724692503
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,17 +758,6 @@ Transform:
   - {fileID: 1400249326}
   m_Father: {fileID: 449485127}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &793950959 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4391434388906897703, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
-  m_PrefabInstance: {fileID: 3842657408062868886}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a5e9ef0a0cfed40a4e8051eee6e43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
 --- !u!4 &859332178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3098435655415784194, guid: c9c0a15532188b24cb40d710c3ba1c43, type: 3}
@@ -3666,18 +3644,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level Manager
       objectReference: {fileID: 0}
-    - target: {fileID: 8750091463945156736, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
-      propertyPath: _spawnPoint.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8750091463945156736, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
-      propertyPath: '_spawnPoint.Array.data[0]'
-      value: 
-      objectReference: {fileID: 720349103}
-    - target: {fileID: 8750091463945156736, guid: 42836c92f0b0f0e46a6dce637af71270, type: 3}
-      propertyPath: '_spawnPoint.Array.data[1]'
-      value: 
-      objectReference: {fileID: 793950959}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
