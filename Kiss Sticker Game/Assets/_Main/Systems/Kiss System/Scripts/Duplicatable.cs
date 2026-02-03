@@ -63,7 +63,7 @@ public class Duplicatable : MonoBehaviour
     private void HandleDamaged()
     {
         _currentState = State.Damaged;
-        if(Cracks != null)
+        if(_isBreakable)
         {
             Cracks.gameObject.SetActive(true);
         }

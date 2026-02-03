@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     #region Script References
     private PlayerMovement _playerMovement;
+    private LevelManager _levelManager;
     #endregion
 
     [SerializeField] private InputActionAsset _inputAsset;
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
     {
         // Assigning references
         _playerMovement = FindAnyObjectByType<PlayerMovement>();
+        _levelManager = FindFirstObjectByType<LevelManager>();
 
         _puzzleResultUI.SetActive(false);
     }
@@ -56,12 +59,30 @@ public class GameManager : MonoBehaviour
             foreach(var particle in _sparksParticles)
             {
                 particle.Play();
+
+                // TEST CODE. DELETE IT ONCE DONE TESTING
+                DOVirtual.DelayedCall(2f, () =>
+                {
+                    _levelManager.OnNextLevel();
+                });
             }
         }
         else
         {
             _resultText.text = "Press [R] to try again! :)";
         }
+    }
+
+    public void ExitResult()
+    {
+        _puzzleResultUI.SetActive(false);
+
+        foreach (var particle in _sparksParticles)
+        {
+            particle.Stop();
+        }
+
+        _resultText.text = "Waiting for results...";
     }
     #endregion
 
