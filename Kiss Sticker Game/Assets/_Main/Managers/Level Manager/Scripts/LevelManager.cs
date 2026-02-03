@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
         _playerMovement = FindFirstObjectByType<PlayerMovement>();
         _camera = Camera.main;
 
-        OnNextLevel();
+        //OnNextLevel();
     }
 
     // TEST CODE. It will teleport player to another location as an easy way to prototype multiple levels in the same scene
@@ -37,7 +37,6 @@ public class LevelManager : MonoBehaviour
             var cameraZ = _camera.transform.position.z;
             _camera.transform.position = new Vector3(nextPos.x, nextPos.y, cameraZ);
             _playerMovement.transform.position = nextPos;
-
 
             _currentSpawn++; // Updates the current pos index
         }
