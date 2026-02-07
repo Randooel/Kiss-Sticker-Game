@@ -261,6 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallBlock
   _isBreakable: 1
+  _isDuplicatable: 1
   Cracks: {fileID: 6758837069439789699}
   Duplicates: []
 --- !u!61 &3884351790545955197

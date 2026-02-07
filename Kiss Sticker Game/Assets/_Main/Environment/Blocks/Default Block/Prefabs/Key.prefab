@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KeyBlock
   _isBreakable: 1
+  _isDuplicatable: 1
   Cracks: {fileID: 3757988966517345466}
   Duplicates: []
 --- !u!61 &1428797149899383711

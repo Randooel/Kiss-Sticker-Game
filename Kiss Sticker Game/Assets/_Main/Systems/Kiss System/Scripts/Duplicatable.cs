@@ -9,10 +9,12 @@ using UnityEngine;
 public class Duplicatable : MonoBehaviour
 {
     [SerializeField] private bool _isBreakable;
+    [SerializeField] private bool _isDuplicatable = true;
 
     [ShowIf("_isBreakable")]
     public Transform Cracks;
 
+    [Space(10)]
     public List<Duplicate> Duplicates = new List<Duplicate>();
 
     private void Start()
@@ -84,7 +86,11 @@ public class Duplicatable : MonoBehaviour
     #region Handle Duplication
     public virtual void OnDuplicate()
     {
-        FindFirstObjectByType<StickerManager>().AddDuplicate(this.gameObject);
+        if (_isDuplicatable)
+        {
+            FindFirstObjectByType<StickerManager>().AddDuplicate(this.gameObject);
+        }
+        else return;
     }
     public virtual void OnUndoDuplicate()
     {

@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlagBlock
   _isBreakable: 0
+  _isDuplicatable: 1
   Cracks: {fileID: 3374560779559066083}
   Duplicates: []
 --- !u!61 &3377133405381656130
