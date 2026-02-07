@@ -37,6 +37,12 @@ public class HoleBlock : BlockClass
             entitie.DOScale(Vector3.zero, _duration).OnComplete(() =>
             {
                 entitie.DOKill();
+
+                if (entitie.GetComponent<Duplicate>())
+                {
+                    entitie.GetComponent<Duplicate>().DestroyDuplicate();
+                }
+
                 entitie.gameObject.SetActive(false);
             });
         });

@@ -145,7 +145,7 @@ public class Duplicate : MonoBehaviour
         s.Append(this.transform.DOScale(transform.localScale * 1.25f, dur));
         s.Append(this.transform.DOScale(Vector3.zero, dur)).OnComplete(() =>
         {
-            FindAnyObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
+            DestroyDuplicate();
         });
     }
 
@@ -172,6 +172,11 @@ public class Duplicate : MonoBehaviour
             Debug.LogWarning("TWEENS KILLED");
             Original.DOKill();
         });
+    }
+
+    public void DestroyDuplicate()
+    {
+        FindAnyObjectByType<StickerManager>().RemoveDuplicate(this.gameObject);
     }
     #endregion
 }
